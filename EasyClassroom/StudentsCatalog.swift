@@ -5,7 +5,7 @@
 //  Created by Łukasz Stachnik on 03/11/2024.
 //
 
-/// Singleton class repeseting all students on the University, for easy access in the classroom creation or group creation :)
+/// Singleton class representing all students on the University, for easy access in the classroom creation or group creation :)
 final class StudentsCatalog {
     private let students: [User]
     private static var instance: StudentsCatalog?
