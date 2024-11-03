@@ -21,7 +21,7 @@ class User: Identifiable {
     let name: String
     let surname: String
 
-    init(id: UUID = UUID(), name: String, surname: String) {
+    fileprivate init(id: UUID = UUID(), name: String, surname: String) {
         self.id = id
         self.name = name
         self.surname = surname
@@ -32,7 +32,7 @@ final class Student: User, Privileged {
     let subjectsPrivileges: Set<SubjectsPrivilege>
     let studentGroupId: UUID?
 
-    init(
+    fileprivate init(
         id: UUID = UUID(),
         name: String,
         surname: String,
@@ -49,7 +49,7 @@ final class Teacher: User, Privileged {
     var groupsIds: [UUID]
     var subjectsIds: [UUID]
 
-    init(id: UUID = UUID(), name: String, surname: String, groupsIds: [UUID], subjectsIds: [UUID]) {
+    fileprivate init(id: UUID = UUID(), name: String, surname: String, groupsIds: [UUID], subjectsIds: [UUID]) {
         self.groupsIds = groupsIds
         self.subjectsIds = subjectsIds
         subjectsPrivileges = .init([.write, .read])
@@ -59,4 +59,24 @@ final class Teacher: User, Privileged {
 
 struct StudentGroup: Codable {
     let id: UUID
+}
+
+enum UserType {
+    case student
+    case teacher
+}
+
+struct UsersFactory {
+    static func createUser(type: UserType, name: String, surname: String) -> User {
+        switch type {
+        case .student:
+            Student(name: name,
+                    surname: surname)
+        case .teacher:
+            Teacher(name: name,
+                    surname: surname,
+                    groupsIds: [],
+                    subjectsIds: [])
+        }
+    }
 }

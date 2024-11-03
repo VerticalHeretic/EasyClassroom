@@ -7,31 +7,31 @@
 
 /// Singleton class repeseting all students on the University, for easy access in the classroom creation or group creation :)
 final class StudentsCatalog {
-    private let students: [Student]
+    private let students: [User]
     private static var instance: StudentsCatalog?
 
     private init() {
         students = [
-            .init(name: "John", surname: "Doe"),
-            .init(name: "Jane", surname: "Smith"),
-            .init(name: "Michael", surname: "Johnson"),
-            .init(name: "Emily", surname: "Davis"),
-            .init(name: "Chris", surname: "Brown"),
-            .init(name: "Amanda", surname: "Wilson"),
-            .init(name: "David", surname: "Anderson"),
-            .init(name: "Sophia", surname: "Martinez"),
-            .init(name: "James", surname: "Taylor"),
-            .init(name: "Olivia", surname: "Harris"),
-            .init(name: "Daniel", surname: "Clark"),
-            .init(name: "Emma", surname: "Walker"),
-            .init(name: "Matthew", surname: "Lee"),
-            .init(name: "Abigail", surname: "Hall"),
-            .init(name: "Joshua", surname: "Allen"),
-            .init(name: "Isabella", surname: "Young"),
-            .init(name: "Anthony", surname: "King"),
-            .init(name: "Mia", surname: "Scott"),
-            .init(name: "William", surname: "Wright"),
-            .init(name: "Charlotte", surname: "Adams")
+            UsersFactory.createUser(type: .student, name: "John", surname: "Doe"),
+            UsersFactory.createUser(type: .student, name: "Jane", surname: "Smith"),
+            UsersFactory.createUser(type: .student, name: "Michael", surname: "Johnson"),
+            UsersFactory.createUser(type: .student, name: "Emily", surname: "Davis"),
+            UsersFactory.createUser(type: .student, name: "Chris", surname: "Brown"),
+            UsersFactory.createUser(type: .student, name: "Amanda", surname: "Wilson"),
+            UsersFactory.createUser(type: .student, name: "David", surname: "Anderson"),
+            UsersFactory.createUser(type: .student, name: "Sophia", surname: "Martinez"),
+            UsersFactory.createUser(type: .student, name: "James", surname: "Taylor"),
+            UsersFactory.createUser(type: .student, name: "Olivia", surname: "Harris"),
+            UsersFactory.createUser(type: .student, name: "Daniel", surname: "Clark"),
+            UsersFactory.createUser(type: .student, name: "Emma", surname: "Walker"),
+            UsersFactory.createUser(type: .student, name: "Matthew", surname: "Lee"),
+            UsersFactory.createUser(type: .student, name: "Abigail", surname: "Hall"),
+            UsersFactory.createUser(type: .student, name: "Joshua", surname: "Allen"),
+            UsersFactory.createUser(type: .student, name: "Isabella", surname: "Young"),
+            UsersFactory.createUser(type: .student, name: "Anthony", surname: "King"),
+            UsersFactory.createUser(type: .student, name: "Mia", surname: "Scott"),
+            UsersFactory.createUser(type: .student, name: "William", surname: "Wright"),
+            UsersFactory.createUser(type: .student, name: "Charlotte", surname: "Adams")
         ]
     }
 
@@ -45,6 +45,6 @@ final class StudentsCatalog {
     }
 
     func getStudents() -> [Student] {
-        students
+        students.compactMap { $0 as? Student }
     }
 }
