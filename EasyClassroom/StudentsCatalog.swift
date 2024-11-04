@@ -5,9 +5,18 @@
 //  Created by Łukasz Stachnik on 03/11/2024.
 //
 
+enum IteratorError: Error {
+    case noMoreElements
+}
+
+protocol StudentsIterator {
+    func getNext() throws(IteratorError) -> Student
+    var hasMore: Bool { get }
+}
+
 /// Singleton class representing all students on the University, for easy access in the classroom creation or group creation :)
-final class StudentsCatalog {
-    private let students: [User]
+final class StudentsCatalog: StudentsIterator {
+    private var students: [User]
     private static var instance: StudentsCatalog?
 
     private init() {
@@ -47,4 +56,19 @@ final class StudentsCatalog {
     func getStudents() -> [Student] {
         students.compactMap { $0 as? Student }
     }
+    
+    // MARK: Students Iterator conformance
+    
+    private var currentPosition: Int = 0
+    func getNext() throws(IteratorError) -> Student {
+        guard currentPosition < students.count - 1 else { throw .noMoreElements }
+        
+        currentPosition += 1
+        return students[currentPosition] as! Student
+    }
+    
+    var hasMore: Bool {
+        currentPosition < students.count - 1
+    }
+    
 }

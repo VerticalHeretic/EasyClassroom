@@ -12,9 +12,9 @@ enum ContentDirections: Hashable {
 }
 
 struct ContentView: View {
-    
     @State var navigationPath = NavigationPath()
-    
+    @State var students: [Student] = []
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             HStack {
@@ -28,15 +28,30 @@ struct ContentView: View {
                 switch direction {
                 case .studentsList:
                     VStack {
-                        ForEach(StudentsCatalog.getInstance().getStudents()) { student in
-                            
+                        ForEach(students) { student in
                             Text("\(student.name) \(student.surname)")
+                        }
+
+                        if StudentsCatalog.getInstance().hasMore {
+                            Button {
+                                do {
+                                    try students.append(StudentsCatalog.getInstance().getNext())
+                                } catch {
+                                    print(error)
+                                }
+                            } label: {
+                                Text("Next student please :)")
+                            }
+                        }
+                    }
+                    .onAppear {
+                        if let student = try? StudentsCatalog.getInstance().getNext() {
+                            students.append(student)
                         }
                     }
                 }
             }
         }
-
     }
 }
 
