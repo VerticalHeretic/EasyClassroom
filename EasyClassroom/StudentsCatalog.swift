@@ -14,6 +14,38 @@ protocol StudentsIterator {
     var hasMore: Bool { get }
 }
 
+protocol Observer: AnyObject, Equatable {
+    func update(data: String)
+}
+
+protocol Subject {
+    var observers: [any Observer] { get set }
+
+    mutating func attach(observer: any Observer)
+
+    mutating func detach(observer: any Observer)
+
+    func notify(data: String)
+}
+
+
+extension Subject {
+    
+    mutating func attach(observer: any Observer) {
+        observers.append(observer)
+    }
+    
+    mutating func detach(observer: any Observer) {
+        observers.removeAll(where: { $0 === observer })
+    }
+    
+    func notify(data: String) {
+        observers.forEach {
+            $0.update(data: data)
+        }
+    }
+}
+
 /// Singleton class representing all students on the University, for easy access in the classroom creation or group creation :)
 final class StudentsCatalog: StudentsIterator {
     private var students: [User]
@@ -56,19 +88,18 @@ final class StudentsCatalog: StudentsIterator {
     func getStudents() -> [Student] {
         students.compactMap { $0 as? Student }
     }
-    
+
     // MARK: Students Iterator conformance
-    
+
     private var currentPosition: Int = 0
     func getNext() throws(IteratorError) -> Student {
         guard currentPosition < students.count - 1 else { throw .noMoreElements }
-        
+
         currentPosition += 1
         return students[currentPosition] as! Student
     }
-    
+
     var hasMore: Bool {
         currentPosition < students.count - 1
     }
-    
 }

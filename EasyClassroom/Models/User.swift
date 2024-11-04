@@ -28,7 +28,16 @@ class User: Identifiable {
     }
 }
 
-final class Student: User, Privileged {
+final class Student: User, Privileged, Observer, Equatable {
+    
+    func update(data: String) {
+        print("New homework: \(data)")
+    }
+    
+    static func == (lhs: Student, rhs: Student) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     let subjectsPrivileges: Set<SubjectsPrivilege>
     let studentGroupId: UUID?
 
@@ -44,10 +53,11 @@ final class Student: User, Privileged {
     }
 }
 
-final class Teacher: User, Privileged {
+final class Teacher: User, Privileged, Subject {
     let subjectsPrivileges: Set<SubjectsPrivilege>
     var groupsIds: [UUID]
     var subjectsIds: [UUID]
+    var observers: [any Observer] = []
 
     fileprivate init(id: UUID = UUID(), name: String, surname: String, groupsIds: [UUID], subjectsIds: [UUID]) {
         self.groupsIds = groupsIds
@@ -56,6 +66,7 @@ final class Teacher: User, Privileged {
         super.init(id: id, name: name, surname: surname)
     }
 }
+
 
 struct StudentGroup: Codable {
     let id: UUID
@@ -66,7 +77,7 @@ enum UserType {
     case teacher
 }
 
-struct UsersFactory {
+enum UsersFactory {
     static func createUser(type: UserType, name: String, surname: String) -> User {
         switch type {
         case .student:

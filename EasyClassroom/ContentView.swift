@@ -9,6 +9,7 @@ import SwiftUI
 
 enum ContentDirections: Hashable {
     case studentsList
+    case homework
 }
 
 struct ContentView: View {
@@ -22,6 +23,12 @@ struct ContentView: View {
                     navigationPath.append(ContentDirections.studentsList)
                 } label: {
                     Text("Open students list")
+                }
+                
+                Button {
+                    navigationPath.append(ContentDirections.homework)
+                } label: {
+                    Text("Open homework observer")
                 }
             }
             .navigationDestination(for: ContentDirections.self) { direction in
@@ -49,6 +56,8 @@ struct ContentView: View {
                             students.append(student)
                         }
                     }
+                case .homework:
+                    HomeworkView()
                 }
             }
         }
